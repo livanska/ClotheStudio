@@ -1,0 +1,23 @@
+@import '../../../styles/variables.scss';
+
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 15px 40px;
+  border-bottom: 1px solid$color-light-grey;
+  @include breakpoint($break_lg) {
+    padding: 15px;
+    align-items: center;
+  }
+  &_pageTitle {
+    font-size: 22px;
+    font-weight: 500;
+    color: $color-dark-grey;
+  }
+  &_logoutBtn {
+    @include breakpoint($break_lg) {
+      display: none;
+    }
+  }
+}

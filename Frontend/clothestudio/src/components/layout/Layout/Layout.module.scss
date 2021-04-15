@@ -1,0 +1,67 @@
+@import '../../../styles/variables.scss';
+
+.page {
+  display: flex;
+  &_inner {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding-left: 320px;
+    min-height: 100vh;
+    width: 100%;
+    @include breakpoint($break_xl) {
+      padding-left: 250px;
+    }
+    @include breakpoint($break_lg) {
+      padding-left: 0;
+    }
+  }
+
+  &_sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: $z-index-sidebar;
+    min-height: 100vh;
+    width: 320px;
+    border-right: 2px solid $color-light-grey;
+    box-shadow: 0 0 15px rgba($color-dark-grey, 0.1);
+    transition: all 0.4s ease-in-out;
+
+    @include breakpoint($break_xl) {
+      width: 250px;
+    }
+
+    @include breakpoint($break_lg) {
+      transform: translateX(-100%);
+    }
+    &.isOpen {
+      box-shadow: 0 0 10px 0px rgba($color-dark-grey, 0.4);
+      @include breakpoint($break_lg) {
+        transform: translateX(0);
+      }
+    }
+  }
+
+  &_sidebarBurger {
+    display: none;
+    @include breakpoint($break_lg) {
+      display: block;
+    }
+  }
+
+  &_content {
+    margin: 20px;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba($color-dark-grey, 0.2);
+    @include breakpoint($break_lg) {
+      margin: 15px;
+      padding: 15px;
+    }
+  }
+
+  &_footer {
+    margin-top: auto;
+  }
+}

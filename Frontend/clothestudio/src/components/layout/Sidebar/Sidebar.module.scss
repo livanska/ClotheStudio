@@ -1,0 +1,82 @@
+@import '../../../styles/variables.scss';
+
+.sidebar {
+  background: linear-gradient(200deg, #fbfbfd 30%, rgba(235, 237, 238, 0.66) 85%);
+
+  &_header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 20px;
+  }
+
+  &_logo {
+    max-width: 200px;
+    width: 100%;
+  }
+
+  &_title {
+    font-size: 24px;
+  }
+
+  &_content {
+    padding: 20px;
+    text-align: center;
+  }
+
+  &_navList {
+    margin-top: 20px;
+    padding: 0 40px;
+    @include breakpoint($break_sm) {
+      padding: 0 20px;
+    }
+    li {
+      &:not(:last-child) {
+        margin-bottom: 10px;
+      }
+      a {
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding: 18px 20px;
+        color: $color-grey;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        svg {
+          display: block;
+          margin-right: 10px;
+          width: 20px;
+          height: 20px;
+          stroke: $color-grey;
+        }
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          z-index: -1;
+
+          border-radius: 6px;
+          opacity: 0;
+          transition: ease-out 0.2s;
+          transform: scale(0.6);
+        }
+        &.active {
+          color: $color-white;
+          svg {
+            stroke: $color-white;
+          }
+
+          &::before {
+            background: $color-blue;
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+      }
+    }
+  }
+}
