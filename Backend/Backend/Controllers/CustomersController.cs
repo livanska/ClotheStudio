@@ -44,7 +44,7 @@ namespace Backend.Controllers
         // GET: api/CustomersByNumber/567-876-232
         [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpGet]
-        [ActionName("ByNumber")]
+       // [ActionName("ByNumber")]
         [ResponseType(typeof(Customer))]
         public IHttpActionResult GetCustomer(string number)
         {

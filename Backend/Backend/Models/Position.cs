@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace Backend
 {
     using System;
@@ -30,6 +32,7 @@ namespace Backend
         [StringLength(50)]
         public string updateDate { get; set; }
 
+        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Employee> Employee { get; set; }
     }

@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace Backend
 {
     using System;
@@ -27,6 +29,7 @@ namespace Backend
 
         public DateTime createDate { get; set; }
 
+
         public DateTime updateDate { get; set; }
 
         public virtual City City { get; set; }
@@ -34,6 +37,7 @@ namespace Backend
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Employee> Employee { get; set; }
 
+        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StoredMaterials> StoredMaterials { get; set; }
     }
