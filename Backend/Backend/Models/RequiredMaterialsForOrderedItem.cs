@@ -1,4 +1,5 @@
 using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace Backend
 {
@@ -27,13 +28,12 @@ namespace Backend
 
         public int? materialID { get; set; }
 
-        [IgnoreDataMember]
         public virtual Material Material { get; set; }
 
-        [IgnoreDataMember]
+        [JsonIgnore]
         public virtual OrderedItems OrderedItems { get; set; }
 
-        [IgnoreDataMember]
+        [JsonIgnore]
         public virtual StoredMaterials StoredMaterials { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace Backend
 {
@@ -32,12 +33,14 @@ namespace Backend
 
         public DateTime updateDate { get; set; }
 
-        [IgnoreDataMember]
+        [JsonIgnore]
         public virtual Employee Employee { get; set; }
 
+        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderPayment> OrderPayment { get; set; }
 
+        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RequestPayment> RequestPayment { get; set; }
     }

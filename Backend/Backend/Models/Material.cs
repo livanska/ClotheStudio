@@ -1,4 +1,5 @@
 using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace Backend
 {
@@ -35,18 +36,20 @@ namespace Backend
 
         public DateTime updateDate { get; set; }
 
-        [IgnoreDataMember]
+        [JsonIgnore]
         public virtual Color Color { get; set; }
 
-        [IgnoreDataMember]
         public virtual MaterialType MaterialType { get; set; }
 
+        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RequestedMaterials> RequestedMaterials { get; set; }
 
+        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RequiredMaterialsForOrderedItem> RequiredMaterialsForOrderedItem { get; set; }
 
+        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StoredMaterials> StoredMaterials { get; set; }
     }

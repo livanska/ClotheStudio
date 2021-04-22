@@ -29,6 +29,18 @@ namespace Backend.Controllers
         public string atelie { get; set; }
     }
 
+    public class EmployeeInserted
+    {
+        public string firstname { get; set; }
+        public string lastname { get; set; }
+        public string email { get; set; }
+        public string phoneNumber { get; set; }
+        public int atelieID { get; set; }
+        public string password { get; set; }
+        public int positionID { get; set; }
+    }
+
+
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class EmployeesController : ApiController
     {
@@ -197,12 +209,26 @@ namespace Backend.Controllers
 
         // POST: api/Employees
         [ResponseType(typeof(Employee))]
-        public async Task<IHttpActionResult> PostEmployee(Employee employee)
+        public async Task<IHttpActionResult> PostEmployee(EmployeeInserted empIns)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
+            Employee employee = new Employee()
+            {
+                employeeID = db.Employee.Max(e => e.employeeID) + 1,
+                atelieID = empIns.atelieID,
+                lastname = empIns.lastname,
+                firstname = empIns.firstname,
+                phoneNumber = empIns.phoneNumber,
+                password = empIns.password,
+                positionID = empIns.positionID,
+                createDate = DateTime.Now,
+                updateDate = DateTime.Now,
+                email = empIns.email
+            };
 
             db.Employee.Add(employee);
 
@@ -212,14 +238,7 @@ namespace Backend.Controllers
             }
             catch (DbUpdateException)
             {
-                if (EmployeeExists(employee.employeeID))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
+
             }
 
             return CreatedAtRoute("DefaultApi", new { id = employee.employeeID }, employee);

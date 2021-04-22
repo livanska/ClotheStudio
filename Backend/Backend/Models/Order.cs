@@ -38,18 +38,19 @@ namespace Backend
 
         public int? orderPaymentID { get; set; }
 
-        [JsonIgnore]
+     
         public virtual Customer Customer { get; set; }
 
-        [IgnoreDataMember]
+        
         public virtual Employee Employee { get; set; }
 
-        [IgnoreDataMember]
+        
         public virtual OrderStatus OrderStatus { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderedItems> OrderedItems { get; set; }
 
+        
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderPayment> OrderPayment { get; set; }
     }

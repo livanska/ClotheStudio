@@ -204,8 +204,14 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AteliesController.cs" />
+    <Compile Include="Controllers\CitiesController.cs" />
+    <Compile Include="Controllers\CountriesController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
+    <Compile Include="Controllers\OrderedItemsController.cs" />
+    <Compile Include="Controllers\OrdersController.cs" />
+    <Compile Include="Controllers\PositionsController.cs" />
+    <Compile Include="Controllers\StoredMaterialsController.cs" />
     <Compile Include="Models\Atelie.cs" />
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\ClotheType.cs" />

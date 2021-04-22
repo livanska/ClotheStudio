@@ -1,4 +1,5 @@
 using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace Backend
 {
@@ -27,13 +28,13 @@ namespace Backend
 
         public DateTime? updateDate { get; set; }
 
-        [IgnoreDataMember]
+        [JsonIgnore]
         public virtual Employee Employee { get; set; }
 
-        [IgnoreDataMember]
+        [JsonIgnore]
         public virtual RequestedMaterials RequestedMaterials { get; set; }
 
-        [IgnoreDataMember]
+        [JsonIgnore]
         public virtual StoredMaterials StoredMaterials { get; set; }
     }
 }
