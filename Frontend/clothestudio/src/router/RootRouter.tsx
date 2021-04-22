@@ -8,7 +8,6 @@ const role = localStorage.getItem('user') !=='' ? (JSON.parse(localStorage.getIt
 
 export const routes = managerRoutes ;
 export const RootRouter = () => (
-
-     <Router>{role == 'Department Manager' ? <ManagerRouter />:<Login/>}</Router>
+     <Router>{role == 'Department Manager' || !role ? <ManagerRouter />:<Login/>}</Router>
 
   );

@@ -5,15 +5,14 @@ import { SidebarNavProps, SidebarNavLinkProps, SidebarProps } from './Sidebar.ty
 import Logo from '../../../assets/images/logo.svg';
 import css from './Sidebar.module.scss';
 import {
-  EmployeesRoute, OrdersRoute
+  EmployeesRoute, OrdersRoute, RequestsRoute
 } from '../../../router/routes';
 
 const SidebarNav = ({ onLinkClick }: SidebarNavProps) => {
   const navLinks: SidebarNavLinkProps[] = [
     { to: EmployeesRoute, name: 'Employees', exact: true  },
     { to: OrdersRoute, name: 'Orders' },
-    
-
+    { to: RequestsRoute, name: 'Requests' },
   ];
 
   return (

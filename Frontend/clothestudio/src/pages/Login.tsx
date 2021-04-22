@@ -13,7 +13,6 @@ export const Login = () => {
       }
     return (
         <div>Login
-            
                 <button onClick={login}>Login</button>
               
         </div>
