@@ -35,6 +35,7 @@ namespace Backend
 
         public virtual ClotheType ClotheType { get; set; }
 
+        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderedItems> OrderedItems { get; set; }
 

@@ -30,7 +30,6 @@ namespace Backend
 
         public virtual Material Material { get; set; }
 
-        [JsonIgnore]
         public virtual OrderedItems OrderedItems { get; set; }
 
         [JsonIgnore]

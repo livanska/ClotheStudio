@@ -1,4 +1,4 @@
-using System.Runtime.Serialization;
+
 using Newtonsoft.Json;
 
 namespace Backend
@@ -12,21 +12,26 @@ namespace Backend
     [Table("OrderPayment")]
     public partial class OrderPayment
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public OrderPayment()
+        {
+            Order = new HashSet<Order>();
+        }
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int orderPaymentID { get; set; }
 
         public int paymentID { get; set; }
 
-        public int orderID { get; set; }
 
         public DateTime? createDate { get; set; }
 
         public DateTime? updateDate { get; set; }
 
         [JsonIgnore]
-        public virtual Order Order { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Order> Order { get; set; }
 
-       
+
         public virtual Payment Payment { get; set; }
     }
 }

@@ -12,11 +12,11 @@ namespace Backend
     [Table("Order")]
     public partial class Order
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage",
+            "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Order()
         {
             OrderedItems = new HashSet<OrderedItems>();
-            OrderPayment = new HashSet<OrderPayment>();
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -38,20 +38,22 @@ namespace Backend
 
         public int? orderPaymentID { get; set; }
 
-     
+
         public virtual Customer Customer { get; set; }
 
-        
+        public virtual OrderPayment OrderPayment { get; set; }
+
         public virtual Employee Employee { get; set; }
 
-        
+
+
         public virtual OrderStatus OrderStatus { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage",
+            "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderedItems> OrderedItems { get; set; }
 
-        
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OrderPayment> OrderPayment { get; set; }
+
+
     }
 }

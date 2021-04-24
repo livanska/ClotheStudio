@@ -14,19 +14,20 @@ using Backend;
 
 namespace Backend.Controllers
 {
+    public class OrderedItemDTO
+    {
+        public int orderedItemID { get; set; }
+        public string clotheType { get; set; }
+        public string service { get; set; }
+        public DateTime createDate { get; set; }
+        public string description { get; set; }
+        public DateTime doneTime { get; set; }
+        public ICollection<RequiredMaterialsForOrderedItem> requiredMaterials { get; set; }
+    }
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class OrderedItemsController : ApiController
     {
-        public class OrderedItemDTO
-        {
-            public int orderedItemID { get; set; }
-            public string clotheType { get; set; }
-            public string service { get; set; }
-            public DateTime createDate { get; set; }
-            public string description { get; set; }
-            public DateTime doneTime { get; set; }
-            public ICollection<RequiredMaterialsForOrderedItem> requiredMaterials { get; set; }
-        }
+
         private SewingAtelie db = new SewingAtelie();
         
         // GET: api/OrderedItems
@@ -49,7 +50,7 @@ namespace Backend.Controllers
                         description = oi.description,
                         orderedItemID =oi.orderedItemID,
                         doneTime =oi.doneTime,
-                        requiredMaterials = oi.RequiredMaterialsForOrderedItem.ToList()
+                        requiredMaterials = oi.RequiredMaterialsForOrderedItem.Where(r => r.orderedItemID == id).ToList()
 
                     }).SingleOrDefaultAsync(oi=> oi.orderedItemID == id);
             if (orderedItems == null)

@@ -25,6 +25,7 @@ _UpgradeReport_Files/
 bin/
 obj/
 TestResults/
+Scripts/
 ###################
 # Web publish log #
 ###################
@@ -72,4 +73,4 @@ _[Ss]cripts
 *.dll
 *.nupkg
 *.ncrunchsolution
-*.dot[Cc]over
+*.dot[Cc]over,

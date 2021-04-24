@@ -29,8 +29,21 @@ namespace Backend.Controllers
         public DateTime? realReceivingTime { get; set; }
        // public int? orderPaymentID { get; set; }
         public int? totalCost { get; set; }
-        ICollection<OrderedItems> orderedItems { get; set; }
+        public ICollection<OrderedItems> orderedItems { get; set; }
 
+    }
+
+    public class OrderInserted
+    {
+        public int employeeID { get; set; }
+        public int? customerID { get; set; }
+        public string firstname { get; set; }
+        public string lastname { get; set; }
+        public string phoneNumber { get; set; }
+        public int statusID { get; set; }
+        public DateTime expectedDeadlineTime { get; set; }
+        public int? totalCost { get; set; }
+        public ICollection<OrderedItems> orderedItems { get; set; }
     }
 
     [EnableCors(origins: "*", headers: "*", methods: "*")]
@@ -59,15 +72,14 @@ namespace Backend.Controllers
             return Ok(order);
         }
 
-        [ResponseType(typeof(Order))]
-        public async Task<IHttpActionResult> GetOrdersInAtelie(int atelieNum, int? employeeNum)
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
+        public async Task<IHttpActionResult> GetOrdersByAtelieEmployee(int atelieNum, int? employeeNum)
         {
-
             var order = db.Order
                 .Where(o => o.Employee.atelieID == atelieNum); 
             if (employeeNum.HasValue)
                 order = order.Where(o => o.employeeID == employeeNum);
-            if (order == null)
+            if (!order.ToList().Any())
             {
                 return NotFound();
             }
@@ -111,15 +123,46 @@ namespace Backend.Controllers
         }
 
         // POST: api/Orders
-        [ResponseType(typeof(Order))]
-        public IHttpActionResult PostOrder(Order order)
+       /* [ResponseType(typeof(Order))]
+        public IHttpActionResult PostOrder(OrderInserted orderIns)
         {
+            int orderInsID = db.Order.Max(o => o.orderID) + 1;
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Order.Add(order);
+            /*orderIns.orderedItems.ForEach(oi =>
+            {
+                int ordItemID = db.OrderedItems.Max(ois => ois.orderedItemID) + 1;
+                db.OrderedItems.Add(
+                    new OrderedItems()
+                    {
+                        orderedItemID = ordItemID,
+                        orderID = orderInsID,
+                        serviceID = oi.serviceID,
+                        description = oi.description,
+                        employeeID = orderIns.employeeID,
+                        createDate = DateTime.Now,
+                        updateDate = DateTime.Now,
+                    }
+                );
+                db.RequiredMaterialsForOrderedItem.Add(new RequiredMaterialsForOrderedItem()
+                {
+                    orderedItemID = ordItemID,
+                    materialID = oi.,
+                    createDate = DateTime.Now,
+                    updateDate = DateTime.Now,
+                    amount = orderInsID
+                })
+            });
+
+
+
+
+            var order = orderIns;
+
+           // db.Order.Add(order);
 
             try
             {
@@ -138,7 +181,7 @@ namespace Backend.Controllers
             }
 
             return CreatedAtRoute("DefaultApi", new { id = order.orderID }, order);
-        }
+        }*/
 
         // DELETE: api/Orders/5
         [ResponseType(typeof(Order))]

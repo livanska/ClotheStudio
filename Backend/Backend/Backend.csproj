@@ -208,10 +208,13 @@
     <Compile Include="Controllers\CountriesController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
+    <Compile Include="Controllers\MaterialsController.cs" />
     <Compile Include="Controllers\OrderedItemsController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\PositionsController.cs" />
+    <Compile Include="Controllers\ServicesController.cs" />
     <Compile Include="Controllers\StoredMaterialsController.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Atelie.cs" />
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\ClotheType.cs" />

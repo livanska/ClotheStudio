@@ -132,17 +132,18 @@ namespace Backend
             modelBuilder.Entity<Order>()
                 .HasMany(e => e.OrderedItems)
                 .WithRequired(e => e.Order)
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(true);
 
-            modelBuilder.Entity<Order>()
-                .HasMany(e => e.OrderPayment)
-                .WithRequired(e => e.Order)
-                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<OrderStatus>()
                 .HasMany(e => e.Order)
                 .WithRequired(e => e.OrderStatus)
                 .HasForeignKey(e => e.statusID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<OrderPayment>()
+                .HasMany(e => e.Order)
+                .WithRequired(e => e.OrderPayment)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Payment>()

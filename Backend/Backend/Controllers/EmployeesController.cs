@@ -129,7 +129,7 @@ namespace Backend.Controllers
                     atelieID = b.atelieID,
                     atelie = b.Atelie.address.ToString() + ", " + b.Atelie.City.name.ToString() + ", " + b.Atelie.City.Country.name.ToString()
 
-                }).SingleOrDefaultAsync(e => e.email == email && e.password == e.password); ;
+                }).SingleOrDefaultAsync(e => e.email == email && e.password == e.password); 
  
             if (employee == null)
             {
