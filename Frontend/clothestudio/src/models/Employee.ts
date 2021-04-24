@@ -1,9 +1,8 @@
 export interface Employee{
-    postition?: String
+    postition?: string
     atelieID: number
     createDate?: Date
     email: string
-    //employeeID: 54
     firstname: string
     lastname: string
     password?: string

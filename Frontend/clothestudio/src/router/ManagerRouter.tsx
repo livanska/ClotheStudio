@@ -3,11 +3,12 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { Layout } from '../components/layout/Layout/Layout';
 import { Employee } from '../pages/Employee';
+import { NewOrder } from '../pages/NewOrder/NewOrder';
 import { Orders } from '../pages/Orders/Orders';
 import { Requests } from '../pages/Requests/Requests';
 
 
-import {EmployeesRoute , OrdersRoute,RequestsRoute} from './routes';
+import {EmployeesRoute , NewOrderRoute, OrdersRoute,RequestsRoute} from './routes';
 
 export const routes = [
   {
@@ -25,6 +26,11 @@ export const routes = [
     path: RequestsRoute,
     title: 'Requests',
     component: Requests
+  },
+  {
+    path: NewOrderRoute,
+    title: 'NewOrder',
+    component: NewOrder
   },
 //   {
 //     path: FormsRoute,

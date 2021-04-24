@@ -47,9 +47,8 @@ export const NewEmployeeModal = ({ modalIsOpen,
     return (
         <Modal isOpen={modalIsOpen} handleCloseModal={handleClose} style={customStyles}>
             <Form.Group>
-                <Button variant='primary'>Sun</Button>
             <Form.Control as="select"  
-                onChange={(e:any)=>handleInfoChange('positionID', e)} >
+                onChange={(e:any)=>handleInfoChange('positionID', e)} defaultValue={0}>
               {positions && positions.map((p:{positionID:number,name:string})=> <option value={p.positionID }>{p.name}</option>)}
                 </Form.Control>
                 </Form.Group>
