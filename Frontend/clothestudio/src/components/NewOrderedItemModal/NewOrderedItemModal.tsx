@@ -21,7 +21,7 @@ const customStyles: ReactModal.Styles = {
         left: '50%',
         transform: 'translate(-50%, -50%)',
         width: '100%',
-        maxWidth: '540px'
+        maxWidth: '540px',
     }
 };
 
@@ -57,7 +57,7 @@ export const NewOrderedItem = ({ modalIsOpen,
 
     async function handleMaterialChange(s: number) {
         const mater = await axios.get(`http://localhost:3000/api/Materials?id=${s}`).then(r => r.data.Result)
-        setReqMaterials(prev => ([...prev, { materialID: s, materialName: `${mater.color} ${mater.name}`, materialCost: mater.costPerUnit }]));
+        setReqMaterials(prev => ([...prev, { materialID: s, materialName: `${mater.color} ${mater.name}`, materialCost: mater.costPerUnit,materialAmount:1 }]));
 
     }
 
@@ -69,6 +69,7 @@ export const NewOrderedItem = ({ modalIsOpen,
         console.log(item)
         addToOrder([...items, item])
         setReqMaterials([])
+        handleClose()
     }
     const handleSelect = (e: any) => {
         if (e.target.value == 'No materials') {
@@ -96,7 +97,16 @@ export const NewOrderedItem = ({ modalIsOpen,
 
     return (
         <Modal isOpen={modalIsOpen} handleCloseModal={handleClose} style={customStyles}>
+            <Button onClick={() => { handleClose(); setReqMaterials([]) }}>close</Button>
             <Form.Group>
+                <Form.Label>Select Service</Form.Label>
+                <Form.Control as="select"
+                    onChange={(e: any) => handleInfoChange('serviceID', e)} defaultValue={0}>
+                    {services && services.map((p: { serviceID: number, name: string, workCost: number }) => <option value={p.serviceID}> {p.name} {p.workCost}$</option>)}
+                </Form.Control>
+            </Form.Group>
+            <Form.Group>
+                <Form.Label>Select Materials</Form.Label>
                 <Form.Control as="select" multiple={true}
                     value={noMaterial ? ['No materials'] : reqMaterials.map(a => a.materialID)}
                     onChange={(e: any) => { handleSelect(e) }}>
@@ -105,21 +115,21 @@ export const NewOrderedItem = ({ modalIsOpen,
                 </Form.Control>
             </Form.Group>
             <Form.Group>
-                <Form.Control as="select"
-                    onChange={(e: any) => handleInfoChange('serviceID', e)} defaultValue={0}>
-                    {services && services.map((p: { serviceID: number, name: string, workCost: number }) => <option value={p.serviceID}> {p.name} {p.workCost}$</option>)}
-                </Form.Control>
+                {reqMaterials.map(rm =>
+                    <InputGroup size="sm" className="mb-2 center" >
+                        <InputGroup.Prepend>
+                            <InputGroup.Text id="inputGroup-sizing-sm" aria-setsize={5}>{rm.materialName} units:</InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <Form.Control type='number' min={1} onChange={(e) => changeAmount(rm.materialID, e)} defaultValue={1} aria-label="Small" aria-describedby="inputGroup-sizing-sm" />
+                        <InputGroup.Append>
+                            <InputGroup.Text>{rm.materialAmount <= 0 ? Math.round(0): (Math.round(rm.materialCost * rm.materialAmount))}$</InputGroup.Text>
+                        </InputGroup.Append>
+                    </InputGroup>)}
             </Form.Group>
-            {reqMaterials.map(rm => <p>{rm.materialName} <Form.Control type='number'
-                onChange={(e) => changeAmount(rm.materialID, e)} defaultValue={0} ></Form.Control></p>)}
+            <Form.Label>Measurements and requirements:</Form.Label>
             <InputGroup>
-                <InputGroup.Prepend>
-                    <InputGroup.Text>Description</InputGroup.Text>
-                </InputGroup.Prepend>
                 <Form.Control onChange={(e: any) => handleInfoChange('description', e)} as="textarea" aria-label="With textarea" />
             </InputGroup>
-            <button onClick={SubmitOrderedItem}>Add</button>
-            <button onClick={handleClose}>close</button>
+            <Button onClick={SubmitOrderedItem}>Add</Button>
         </Modal>)
 }
-

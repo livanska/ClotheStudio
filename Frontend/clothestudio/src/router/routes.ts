@@ -9,4 +9,5 @@ export const EmployeesRoute = '/employees';
 
 //storageManager
 export const RequestsRoute = '/requests';
+export const NewRequestRoute = '/newRequest';
 export const StorageRoute = '/storage';

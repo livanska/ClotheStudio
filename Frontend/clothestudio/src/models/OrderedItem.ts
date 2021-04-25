@@ -13,7 +13,7 @@ export interface OrderedItem {
     serviceCost:number;
 }
 export const defaultOrderedItem:OrderedItem = {
-    serviceID:0,
+    serviceID:1,
     reqMaterials:[],
     description:'',
     serviceName:'',

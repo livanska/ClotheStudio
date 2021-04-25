@@ -4,12 +4,16 @@ export interface Order{
     employeeID:number;
     customerID?:number;
     statusID?:number;
-    expectedDeadlineTime:Date;
+    atelieID?:number
+    expectedDeadlineTime:string;
     orderedItems: OrderedItem[];
+    firstname?:string
+    lastname?:string
+    phoneNumber?:string
 }
 
 export const defaultOrder:Order={
     employeeID:0,
-    expectedDeadlineTime:new Date,
+    expectedDeadlineTime: '',
     orderedItems: [],
 }

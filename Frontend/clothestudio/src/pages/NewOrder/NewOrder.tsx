@@ -17,30 +17,50 @@ export const NewOrder = () => {
         setModalIsOpen(false);
     };
 
-    // async function handleInfoChange  (property: string, e: ChangeEvent<HTMLInputElement>) {
-    //     setItem(prev => ({ ...prev, [`${property}`]: e.target.value }))
-    // }
+
+    const createOrder=()=>{
+        const res = axios.post('http://localhost:3000/api/Orders', {...order,totalCost:total}).then(r=>r.data)
+        console.log(order)
+    }
 
     useEffect(() => {
         handleInfoSelect('employeeID', (JSON.parse(localStorage.getItem('user')!).employeeID) as number)
+        handleInfoSelect('atelieID', (JSON.parse(localStorage.getItem('user')!).atelieID) as number)
     }, [])
+
+
+    const handleDateChange = (e:string)=>{
+        //431-630-6441
+        let date = ((new Date(Date.parse(e) )).toLocaleString())
+        setOrder(prev => ({ ...prev, expectedDeadlineTime: date}))
+    }
 
     const handleInfoSelect = (property: string, e: number) => {
         setOrder(prev => ({ ...prev, [`${property}`]: e }))
     }
 
-    const handleNumberChange = (number: string) => {
-        const res = axios.get(`http://localhost:3000/api/Customers?number=${number}`).then(r => { setNeedNewCustomer(false); setCustomer(r.data) }).catch(function (error) {
+    async function handleNumberChange (number: string){
+        const res = await axios.get(`http://localhost:3000/api/Customers?number=${number}`).then(r => { setNeedNewCustomer(false); setCustomer(r.data) }).catch(function (error) {
             if (error.response) {
                 setNeedNewCustomer(true)
                 setCustomer((prev: any) => ({ ...prev, phoneNumber: number }))
             }
             else {
-                handleInfoSelect('customerID', customer.customerID)
                 setNeedNewCustomer(false)
             }
         })
     }
+
+    useEffect(()=>{
+        setOrder(prev=>({ ...prev, orderedItems:orderedItems}))
+    },[orderedItems])
+
+    useEffect(()=>{
+        if(!needNewCustomer)
+            handleInfoSelect('customerID', customer.customerID)
+       else setOrder(prev=> ({...prev, firstname:customer.firstname , lastname:customer.lastname ,phoneNumber:customer.phoneNumber}))
+    },[customer])
+
     const deleteOrderItem = (oi: OrderedItem) => {
         setOrderedItems((prev: OrderedItem[]) => prev.filter(o => o !== oi))
     }
@@ -48,7 +68,7 @@ export const NewOrder = () => {
     const total = useMemo(() => {
         let sum = orderedItems.reduce((s: number, oi: OrderedItem) => s + oi.serviceCost + (Math.round(oi.reqMaterials.reduce((sum, rm) => sum + rm.materialAmount * rm.materialCost, 0))), 0)
         console.log(sum)
-        return (customer !== undefined && customer.discount !== null) ? sum - Math.round(sum * customer.discount / 100) : sum
+        return (customer.customerID !== undefined) ? sum - Math.round(sum * customer.discount / 100) : sum
     }, [orderedItems, customer])
 
     return (
@@ -71,12 +91,13 @@ export const NewOrder = () => {
             {customer && <p>{customer.firstname} {customer.firstname && (customer.discount ? `${customer.discount}%` : 0)}</p>}
             <Form.Group >
                 <Form.Label>Select Date</Form.Label>
-                <Form.Control type="datetime-local" placeholder="Date of Birth" onChange={(e) => handleInfoSelect('expectedDeadlineTime', e.timeStamp)} />
+                <Form.Control type="datetime-local" placeholder="Deadline" onChange={(e) => handleDateChange( e.target.value)} />
             </Form.Group>
             <button onClick={() => { console.log(order) }}>console</button>
             {orderedItems.map((oi: OrderedItem) => <p>{oi.serviceName}
                 {oi.serviceCost + (Math.round(oi.reqMaterials.reduce((sum, rm) => sum + rm.materialAmount * rm.materialCost, 0)))}$
             <button onClick={() => deleteOrderItem(oi)}>Delete</button>
+            <button onClick={createOrder}>Create Order</button>
             </p>)}
             {orderedItems.length !== 0 && <p>Total:{total}</p>}
             <NewOrderedItem
