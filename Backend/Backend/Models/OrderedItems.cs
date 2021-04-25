@@ -27,14 +27,14 @@ namespace Backend
 
         public int serviceID { get; set; }
 
-        public DateTime doneTime { get; set; }
+        public DateTime? doneTime { get; set; }
 
         [Required]
         public string description { get; set; }
 
-        public DateTime createDate { get; set; }
+        public DateTime? createDate { get; set; }
 
-        public DateTime updateDate { get; set; }
+        public DateTime? updateDate { get; set; }
 
         [JsonIgnore]
         public virtual Employee Employee { get; set; }

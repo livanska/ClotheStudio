@@ -165,15 +165,15 @@ namespace Backend
                 .WithRequired(e => e.Position)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Request>()
-                .HasMany(e => e.RequestedMaterials)
-                .WithRequired(e => e.Request)
+            modelBuilder.Entity<RequestPayment>()
+                .HasMany(e => e.Request)
+                .WithRequired(e => e.RequestPayment)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Request>()
+            /*modelBuilder.Entity<Request>()
                 .HasMany(e => e.RequestPayment)
                 .WithRequired(e => e.Request)
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(false);*/
 
             modelBuilder.Entity<RequestedMaterials>()
                 .HasMany(e => e.RequestedMaterialRealization)

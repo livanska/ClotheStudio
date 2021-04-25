@@ -212,8 +212,10 @@
     <Compile Include="Controllers\OrderedItemsController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\PositionsController.cs" />
+    <Compile Include="Controllers\RequestsController.cs" />
     <Compile Include="Controllers\ServicesController.cs" />
     <Compile Include="Controllers\StoredMaterialsController.cs" />
+    <Compile Include="Controllers\SupplierCompaniesController.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Atelie.cs" />
     <Compile Include="Models\City.cs" />

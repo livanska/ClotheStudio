@@ -28,13 +28,13 @@ namespace Backend
 
         public int employeeID { get; set; }
 
-        public DateTime expectedDeadlineTime { get; set; }
+        public DateTime? expectedDeadlineTime { get; set; }
 
         public DateTime? realReceivingTime { get; set; }
 
-        public DateTime createDate { get; set; }
+        public DateTime? createDate { get; set; }
 
-        public DateTime updateDate { get; set; }
+        public DateTime? updateDate { get; set; }
 
         public int? orderPaymentID { get; set; }
 

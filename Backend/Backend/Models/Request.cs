@@ -16,7 +16,6 @@ namespace Backend
         public Request()
         {
             RequestedMaterials = new HashSet<RequestedMaterials>();
-            RequestPayment = new HashSet<RequestPayment>();
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -28,13 +27,17 @@ namespace Backend
 
         public int employeeID { get; set; }
 
-        public DateTime expectedDeadlineTime { get; set; }
+        public DateTime? expectedDeadlineTime { get; set; }
 
         public DateTime? realReceivingTime { get; set; }
 
-        public DateTime updateDate { get; set; }
+        public DateTime? updateDate { get; set; }
 
-        public DateTime createDate { get; set; }
+        public DateTime? createDate { get; set; }
+
+        public int? requestPaymentID { get; set; }
+
+        public virtual RequestPayment RequestPayment { get; set; }
 
         [JsonIgnore]
         public virtual Employee Employee { get; set; }
@@ -49,8 +52,5 @@ namespace Backend
         [JsonIgnore]
         public virtual RequestStatus RequestStatus { get; set; }
 
-        [JsonIgnore]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RequestPayment> RequestPayment { get; set; }
     }
 }

@@ -12,10 +12,15 @@ namespace Backend
     [Table("RequestPayment")]
     public partial class RequestPayment
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public RequestPayment()
+        {
+            Request = new HashSet<Request>();
+        }
+
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int requestPaymentID { get; set; }
 
-        public int requestID { get; set; }
 
         public int paymentID { get; set; }
 
@@ -27,6 +32,7 @@ namespace Backend
         public virtual Payment Payment { get; set; }
 
         [JsonIgnore]
-        public virtual Request Request { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Request> Request { get; set; }
     }
 }

@@ -21,13 +21,14 @@ namespace Backend
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int requestedMaterialID { get; set; }
 
+       
         public int requestID { get; set; }
 
         public int materialID { get; set; }
 
         public int amount { get; set; }
 
-        public int cost { get; set; }
+        public int? cost { get; set; }
 
         public DateTime createDate { get; set; }
 

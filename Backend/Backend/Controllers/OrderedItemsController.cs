@@ -19,9 +19,9 @@ namespace Backend.Controllers
         public int orderedItemID { get; set; }
         public string clotheType { get; set; }
         public string service { get; set; }
-        public DateTime createDate { get; set; }
+        public DateTime? createDate { get; set; }
         public string description { get; set; }
-        public DateTime doneTime { get; set; }
+        public DateTime? doneTime { get; set; }
         public ICollection<RequiredMaterialsForOrderedItem> requiredMaterials { get; set; }
     }
     [EnableCors(origins: "*", headers: "*", methods: "*")]
