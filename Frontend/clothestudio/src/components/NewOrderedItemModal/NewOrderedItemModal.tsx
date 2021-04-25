@@ -22,6 +22,7 @@ const customStyles: ReactModal.Styles = {
         transform: 'translate(-50%, -50%)',
         width: '100%',
         maxWidth: '540px',
+        textAlign:'center'
     }
 };
 
@@ -97,17 +98,17 @@ export const NewOrderedItem = ({ modalIsOpen,
 
     return (
         <Modal isOpen={modalIsOpen} handleCloseModal={handleClose} style={customStyles}>
-            <Button onClick={() => { handleClose(); setReqMaterials([]) }}>close</Button>
+            <Form.Label style={{fontSize:'24px'}}>New item</Form.Label>
             <Form.Group>
-                <Form.Label>Select Service</Form.Label>
-                <Form.Control as="select"
+                <Form.Label style={{ float: 'left' }} >Select service:</Form.Label>
+                <Form.Control as="select" 
                     onChange={(e: any) => handleInfoChange('serviceID', e)} defaultValue={0}>
                     {services && services.map((p: { serviceID: number, name: string, workCost: number }) => <option value={p.serviceID}> {p.name} {p.workCost}$</option>)}
                 </Form.Control>
             </Form.Group>
             <Form.Group>
-                <Form.Label>Select Materials</Form.Label>
-                <Form.Control as="select" multiple={true}
+                <Form.Label  style={{ float: 'left' }} >Select materials:</Form.Label>
+                <Form.Control as="select"  style={{height:'200px'}} multiple={true}
                     value={noMaterial ? ['No materials'] : reqMaterials.map(a => a.materialID)}
                     onChange={(e: any) => { handleSelect(e) }}>
                     <option value={'No materials'}>No materials</option>
@@ -126,10 +127,11 @@ export const NewOrderedItem = ({ modalIsOpen,
                         </InputGroup.Append>
                     </InputGroup>)}
             </Form.Group>
-            <Form.Label>Measurements and requirements:</Form.Label>
-            <InputGroup>
+            <Form.Label style={{ float: 'left' }}>Measurements and requirements:</Form.Label>
+            <InputGroup className='mb-3'>
                 <Form.Control onChange={(e: any) => handleInfoChange('description', e)} as="textarea" aria-label="With textarea" />
             </InputGroup>
-            <Button onClick={SubmitOrderedItem}>Add</Button>
+            <Button onClick={SubmitOrderedItem}>Add</Button>{' '}
+            <Button onClick={() => { handleClose(); setReqMaterials([]) }}>Discard</Button>
         </Modal>)
 }

@@ -29,7 +29,8 @@ export const NewRequest = () => {
     const createRequest = () => {
         console.log(total)
         const res = axios.post('http://localhost:3000/api/Requests', { ...request, totalCost: total }).then(r => r.data)
-        console.log(res)
+        //console.log(res)
+        //console.log( { ...request, totalCost: total })
     }
 
     useEffect(() => {
@@ -82,7 +83,7 @@ export const NewRequest = () => {
 
     async function handleMaterialChange(s: number) {
         const mater = await axios.get(`http://localhost:3000/api/Materials?id=${s}`).then(r => r.data.Result)
-        setRequestedMaterials(prev => ([...prev, { materialID: s, materialName: `${mater.color} ${mater.name}`, materialCost: mater.costPerUnit, materialAmount: 1 }]));
+        setRequestedMaterials(prev => ([...prev, { materialID: s as number, materialName: `${mater.color} ${mater.name}`, materialCost: mater.costPerUnit, materialAmount: 1 as number  }]));
 
     }
     const changeAmount = (id: number, e: any) => {
@@ -91,7 +92,7 @@ export const NewRequest = () => {
                 if (rm.materialID === id) {
                     return {
                         ...rm,
-                        materialAmount: e.target.value
+                        materialAmount: e.target.value as number
                     };
                 }
                 return rm;
