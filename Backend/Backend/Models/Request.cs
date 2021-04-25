@@ -39,17 +39,14 @@ namespace Backend
 
         public virtual RequestPayment RequestPayment { get; set; }
 
-        [JsonIgnore]
+ 
         public virtual Employee Employee { get; set; }
 
-        [JsonIgnore]
         public virtual SupplierCompany SupplierCompany { get; set; }
 
-        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RequestedMaterials> RequestedMaterials { get; set; }
 
-        [JsonIgnore]
         public virtual RequestStatus RequestStatus { get; set; }
 
     }

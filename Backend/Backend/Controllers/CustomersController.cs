@@ -6,6 +6,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Http.Description;
@@ -17,6 +18,18 @@ namespace Backend.Controllers
 
     public class CustomersController : ApiController
     {
+        public class CustomerDTO 
+        {
+            public int customerID { get; set; }
+            public string firstname { get; set; }
+            public string lastname { get; set; }
+            public string phoneNumber { get; set; }
+            public int? discount { get; set; }
+            public DateTime createDate { get; set; }
+            public DateTime updateDate { get; set; }
+            public int? ordersCount  { get; set; }
+        }
+
         private SewingAtelie db = new SewingAtelie();
 
         // GET: api/Customers
@@ -28,16 +41,25 @@ namespace Backend.Controllers
 
         // GET: api/Customers/5
 
-        [ResponseType(typeof(Customer))]
-        public IHttpActionResult GetCustomer(int id)
+        [ResponseType(typeof(CustomerDTO))]
+        public async Task<IHttpActionResult> GetCustomer(int id)
         {
-            Customer customer = db.Customer.Find(id);
-            if (customer == null)
-            {
-                return NotFound();
-            }
+            var cust = db.Customer
+                .Select(customer=> 
+                    new CustomerDTO()
+                {
+                    createDate = customer.createDate,
+                    updateDate = customer.updateDate,
+                    firstname = customer.firstname,
+                    lastname = customer.lastname,
+                    phoneNumber = customer.phoneNumber,
+                    discount = customer.discount,
+                    customerID = customer.customerID,
+                    ordersCount = db.Order.Where(o => o.customerID == id).Count()
 
-            return Ok(customer);
+                }).SingleOrDefaultAsync(b => b.customerID == id);
+
+            return Ok(cust);
         }
 
 

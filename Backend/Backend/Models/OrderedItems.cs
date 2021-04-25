@@ -42,7 +42,7 @@ namespace Backend
         [JsonIgnore]
         public virtual Order Order { get; set; }
 
-        [JsonIgnore]
+     
         public virtual Services Services { get; set; }
 
         [JsonIgnore]

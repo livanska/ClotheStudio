@@ -107,6 +107,7 @@ namespace Backend.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutOrder(int id, Order order)
         {
+            order.OrderStatus = db.OrderStatus.Where(o => o.orderStatusID == order.statusID).First();
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -149,8 +150,8 @@ namespace Backend.Controllers
                 createDate = DateTime.Now,
                 updateDate = DateTime.Now,
                 employeeID = orderIns.employeeID,
-                billNumber = new Random().Next(99999),
-                totalCost = orderIns.totalCost,
+                billNumber = db.Payment.Max(o => o.billNumber) + 1,
+            totalCost = orderIns.totalCost,
             });
 
             var ordPaymentInsID = db.OrderPayment.Max(p => p.paymentID) + 1;

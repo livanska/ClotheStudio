@@ -26,7 +26,7 @@ namespace Backend.Controllers
         public int atelieID { get; set; }
         public DateTime? expectedDeadlineTime { get; set; }
         public int? totalCost { get; set; }
-        public ICollection<MaterialIns> orderedMaterials { get; set; }
+        public ICollection<MaterialIns> requestedMaterials { get; set; }
     }
 
     [EnableCors(origins: "*", headers: "*", methods: "*")]
@@ -73,6 +73,7 @@ namespace Backend.Controllers
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutRequest(int id, Request request)
         {
+            request.RequestStatus = db.RequestStatus.Where(o => o.requestStatusID == request.statusID).First();
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -116,7 +117,7 @@ namespace Backend.Controllers
                 createDate = DateTime.Now,
                 updateDate = DateTime.Now,
                 employeeID = reqInst.employeeID,
-                billNumber = new Random().Next(99999),
+                billNumber = db.Payment.Max(o => o.billNumber) + 1,
                 totalCost = reqInst.totalCost,
             });
 
@@ -198,7 +199,7 @@ namespace Backend.Controllers
 
             });
             int reqMatStartID = db.RequestedMaterials.Max(ois => ois.requestedMaterialID);
-                reqInst.orderedMaterials.ForEach(om =>
+                reqInst.requestedMaterials.ForEach(om =>
                 {
                     reqMatStartID++;
                     db.RequestedMaterials.Add(new RequestedMaterials()
@@ -240,6 +241,13 @@ namespace Backend.Controllers
                 return NotFound();
             }
 
+            var reqToRem = db.RequestedMaterials.Where(rm => rm.requestID == id);
+            reqToRem.ForEach(rm=>db.RequestedMaterials.Remove(rm));
+            var reqPaymnet = db.RequestPayment.Where(p => p.requestPaymentID == request.requestPaymentID).First();
+            var paymnet = reqPaymnet.Payment;
+
+            db.Payment.Remove(paymnet);
+            db.RequestPayment.Remove(reqPaymnet);
             db.Request.Remove(request);
             await db.SaveChangesAsync();
 

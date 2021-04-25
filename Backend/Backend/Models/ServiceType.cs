@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace Backend
 {
     using System;
@@ -25,6 +27,8 @@ namespace Backend
 
         public DateTime? updateDate { get; set; }
 
+
+        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Services> Services { get; set; }
     }

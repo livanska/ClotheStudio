@@ -34,7 +34,7 @@ namespace Backend
 
         public DateTime updateDate { get; set; }
 
-        [JsonIgnore]
+       
         public virtual Material Material { get; set; }
 
         [JsonIgnore]

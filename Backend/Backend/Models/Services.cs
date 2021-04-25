@@ -25,7 +25,8 @@ namespace Backend
 
         public int serviceTypeID { get; set; }
 
-        public int workCost { get; set; }
+        [Column(TypeName = "money")]
+        public decimal workCost { get; set; }
 
         public TimeSpan duration { get; set; }
 

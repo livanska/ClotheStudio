@@ -28,7 +28,6 @@ namespace Backend
 
         public DateTime? updateDate { get; set; }
 
-        [JsonIgnore]
         public virtual Payment Payment { get; set; }
 
         [JsonIgnore]

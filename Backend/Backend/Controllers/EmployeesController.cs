@@ -11,6 +11,7 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Http.Description;
 using Backend;
+using WebGrease.Css.Extensions;
 
 namespace Backend.Controllers
 {
@@ -27,6 +28,9 @@ namespace Backend.Controllers
         public string position { get; set; }
         public int atelieID { get; set; }
         public string atelie { get; set; }
+        public int ordersCount { get; set; }
+        public decimal? ordersCost { get; set; }
+        public decimal? avgOrderCost { get; set; }
     }
 
     public class EmployeeInserted
@@ -49,6 +53,7 @@ namespace Backend.Controllers
         // GET: api/Employees
         public IQueryable<EmployeeDTO> GetEmployee()
         {
+          
             var employees = db.Employee
                 .Include(a => a.Position)
                 .Include(a => a.Atelie)
@@ -66,8 +71,12 @@ namespace Backend.Controllers
                     password = b.password,
                     createDate = b.createDate,
                     atelieID = b.atelieID,
-                    atelie = b.Atelie.address.ToString() + ", " + b.Atelie.City.name.ToString() + ", " + b.Atelie.City.Country.name.ToString()
-                });
+                    atelie = b.Atelie.address.ToString() + ", " + b.Atelie.City.name.ToString() + ", " + b.Atelie.City.Country.name.ToString(),
+                    ordersCount = db.Order.Where(o=>o.employeeID == b.employeeID).Count(),
+                    ordersCost = db.Order.Where(o => o.employeeID == b.employeeID).Sum(o=>o.OrderPayment.Payment.totalCost),
+                    avgOrderCost = db.Order.Where(o => o.employeeID == b.employeeID).Average(o=> o.OrderPayment.Payment.totalCost)
+                }
+        );
             return employees;
         }
 
@@ -94,7 +103,10 @@ namespace Backend.Controllers
                     password = b.password,
                     createDate = b.createDate,
                     atelieID= b.atelieID,
-                    atelie = b.Atelie.address.ToString()+ ", "+ b.Atelie.City.name.ToString() + ", "+b.Atelie.City.Country.name.ToString()
+                    atelie = b.Atelie.address.ToString()+ ", "+ b.Atelie.City.name.ToString() + ", "+b.Atelie.City.Country.name.ToString(),
+                    ordersCount = db.Order.Where(o => o.employeeID == b.employeeID).Count(),
+                    ordersCost = db.Order.Where(o => o.employeeID == b.employeeID).Sum(o => o.OrderPayment.Payment.totalCost),
+                    avgOrderCost = db.Order.Where(o => o.employeeID == b.employeeID).Average(o => o.OrderPayment.Payment.totalCost)
 
                 }).SingleOrDefaultAsync(b => b.employeeID == id);
 
