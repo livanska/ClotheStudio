@@ -2,7 +2,7 @@ import axios from "axios"
 import React, { useState } from "react"
 import { Button, Form } from "react-bootstrap"
 import { Redirect } from "react-router"
-import { Link } from "react-router-dom"
+import { Link ,useHistory } from "react-router-dom"
 import css from './Login.module.scss'
 import ClotheStudio from './ClotheStudio.svg';
 
@@ -13,8 +13,11 @@ export const Login = () => {
         const res = await axios.get(`http://localhost:3000/api/Employees?email=${email}&password=string`).then(r => r.data.Result);
        console.log(res)
        localStorage.setItem('user', JSON.stringify(res));
-        window.location.pathname = '/orders'
-      
+     
+       if(res.position == 'Master' || 'Department Manager')
+        window.location.href  = '/orders'
+        else
+      window.location.pathname  = '/requests'
     }
 
 

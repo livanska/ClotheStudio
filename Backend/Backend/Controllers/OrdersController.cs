@@ -149,7 +149,6 @@ namespace Backend.Controllers
                 paymentID = paymentInsID,
                 createDate = DateTime.Now,
                 updateDate = DateTime.Now,
-                employeeID = orderIns.employeeID,
                 billNumber = db.Payment.Max(o => o.billNumber) + 1,
             totalCost = orderIns.totalCost,
             });

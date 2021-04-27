@@ -269,11 +269,44 @@ namespace Backend.Controllers
         [ResponseType(typeof(Employee))]
         public IHttpActionResult DeleteEmployee(int id)
         {
+
             Employee employee = db.Employee.Find(id);
             if (employee == null)
             {
                 return NotFound();
             }
+
+            var orders = db.Order.Where(o => o.employeeID == id);
+            orders.ForEach(order =>
+            {
+                var ordItemsToRem = db.OrderedItems.Where(oi => oi.orderID == order.orderID);
+                ordItemsToRem.ForEach(oi =>
+                {
+                    var reqMat =
+                        db.RequiredMaterialsForOrderedItem.Where(rmoi => rmoi.orderedItemID == oi.orderedItemID);
+                    reqMat.ForEach(rm => db.RequiredMaterialsForOrderedItem.Remove(rm));
+                    db.OrderedItems.Remove(oi);
+                });
+
+                var ordPaymnet = db.OrderPayment.Where(p => p.orderPaymentID == order.orderPaymentID).First();
+                var paymnet = ordPaymnet.Payment;
+                db.Payment.Remove(paymnet);
+                db.OrderPayment.Remove(ordPaymnet);
+                db.Order.Remove(order);
+            });
+            var requests =  db.Request.Where(o => o.employeeID == id); ;
+
+            requests.ForEach(request =>
+            {
+                var reqToRem = db.RequestedMaterials.Where(rm => rm.requestID == id);
+                reqToRem.ForEach(rm => db.RequestedMaterials.Remove(rm));
+                var reqPaymnet = db.RequestPayment.Where(p => p.requestPaymentID == request.requestPaymentID).First();
+                var paymnet = reqPaymnet.Payment;
+
+                db.Payment.Remove(paymnet);
+                db.RequestPayment.Remove(reqPaymnet);
+                db.Request.Remove(request);
+            });
 
 
             db.Employee.Remove(employee);

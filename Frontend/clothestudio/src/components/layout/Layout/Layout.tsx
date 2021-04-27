@@ -35,7 +35,9 @@ export const Layout = ({ children }: LayoutProps) => {
           }
         />
 
-        <main className={css.page_content}>{children}</main>
+        <main className={css.page_content}>
+         {children}
+          </main>
 
        
       </div>

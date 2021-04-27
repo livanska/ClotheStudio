@@ -20,7 +20,7 @@ namespace Backend
 
         public int storedMaterialID { get; set; }
 
-        public int employeeID { get; set; }
+        public int? employeeID { get; set; }
 
         public int materialAmount { get; set; }
 

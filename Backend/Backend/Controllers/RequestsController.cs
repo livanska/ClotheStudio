@@ -75,12 +75,12 @@ namespace Backend.Controllers
         {
             request.RequestStatus = db.RequestStatus.Where(o => o.requestStatusID == request.statusID).First();
 
-            if (request.RequestStatus.requestStatusID == 4)
+            if (request.statusID == 4)
             {
-                db.RequestedMaterials.Where(rm=>rm.requestID==request.requestID).ForEach(rm =>
+                db.RequestedMaterials.Where(rm=>rm.requestID == request.requestID).ForEach(rm =>
                 {
-                    var matExists = db.StoredMaterials.Any(sm =>
-                        sm.atelierID == request.Employee.atelieID && sm.materialID == rm.materialID);
+                    var matExists = db.StoredMaterials.Any(sm => sm.atelierID == request.Employee.atelieID && sm.materialID == rm.materialID);
+
                     if (matExists)
                     {
                         var stormatID = db.StoredMaterials
@@ -91,12 +91,14 @@ namespace Backend.Controllers
                         db.Entry(stormat).State = EntityState.Modified;
 
 
+
                     }
                     else
                     {
+                        var newStID = db.StoredMaterials.Max(st => st.storedMaterialID) + 1;
                         db.StoredMaterials.Add(new StoredMaterials()
                         {
-                            storedMaterialID = db.StoredMaterials.Max(st => st.storedMaterialID) + 1,
+                            storedMaterialID = newStID++,
                             atelierID = request.Employee.atelieID,
                             materialID = rm.materialID,
                             amountLeft = rm.amount,
@@ -106,18 +108,12 @@ namespace Backend.Controllers
                         });
                     }
 
-                    
+
                 });
+               
             }
 
-
-       
-
-
-
-
-
-
+            
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -160,7 +156,6 @@ namespace Backend.Controllers
                 paymentID = paymentInsID,
                 createDate = DateTime.Now,
                 updateDate = DateTime.Now,
-                employeeID = reqInst.employeeID,
                 billNumber = db.Payment.Max(o => o.billNumber) + 1,
                 totalCost = reqInst.totalCost,
             });

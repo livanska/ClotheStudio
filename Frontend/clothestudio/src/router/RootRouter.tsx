@@ -5,16 +5,14 @@ import { ManagerRouter, routes as managerRoutes } from './ManagerRouter';
 import { MasterRouter, routes as masterRoutes } from './MasterRouter';
 import { RequestManagerRouter, routes as requestManagerRoutes } from './RequestManagerRouter';
 
-const IsDepartmentManager = (JSON.parse(localStorage.getItem('user')|| '')).position == 'Department Manager';
-const IsStorageManager = (JSON.parse(localStorage.getItem('user')|| '')).position == 'Storage Manager';
 
-export const routes = IsDepartmentManager ? managerRoutes: (IsStorageManager? requestManagerRoutes:masterRoutes);
-const role = localStorage.getItem('user') !=='' ? (JSON.parse(localStorage.getItem('user')|| '')).position : '';
+//const role = localStorage.getItem('user') !=='' ? (JSON.parse(localStorage.getItem('user')|| '')).position : '';
 
 export const RootRouter = () => {
-   console.log(role)
+const role = localStorage.getItem('user') !=='' ? (JSON.parse(localStorage.getItem('user')|| '')).position : '';
+console.log(role)
 return(
-     <Router>{role && role == 'Department Manager' ? (<ManagerRouter />): role == 'Master' ?<MasterRouter />:<Login/>}
+     <Router>{role && role == 'Department Manager' ? <ManagerRouter />: (role == 'Master' ?<MasterRouter />:(role == 'Storage Manager'? <RequestManagerRouter/>:<Login/>))}
      </Router>
 )
 }

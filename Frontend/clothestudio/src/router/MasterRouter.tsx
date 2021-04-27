@@ -18,22 +18,26 @@ export const routes = [
   {
     path: OrdersRoute,
     title: 'Orders',
+    exact: true,
     component: Orders
   },
 
   {
     path: NewOrderRoute,
     title: 'NewOrder',
+    exact: true,
     component: NewOrder
   },
   {
     path: StorageRoute,
     title: 'Storage',
+    exact: true,
     component: Storage
   },
   {
     path: LoginRoute,
     title: 'Login',
+    exact: true,
     component: Login
   },
 //   {
@@ -62,7 +66,7 @@ export const MasterRouter = () => (
   <Layout>
     <Switch>
       {routes.map(route => (
-        <Route path={route.path}  key={route.path} component={route.component} />
+        <Route path={route.path} exact={route.exact}  key={route.path} component={route.component} />
       ))}
     </Switch>
   </Layout>

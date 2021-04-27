@@ -6,10 +6,13 @@ import { Login } from './pages/Login/Login';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 function App() {
+  const role = localStorage.getItem('user');
+  console.log(role)
   return (
     <div className="App">
-    
-      <RootRouter/>
+     {/* {(!role || role=='') ? <Login /> : <RootRouter />}  */}
+<RootRouter/>
+
     </div>
   );
 }

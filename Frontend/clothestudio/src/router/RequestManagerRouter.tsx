@@ -18,6 +18,7 @@ export const routes = [
 
   {
     path: RequestsRoute,
+    exact: true,
     title: 'Requests',
     component: Requests
   },
@@ -25,16 +26,19 @@ export const routes = [
   {
     path: NewRequestRoute,
     title: 'NewRequest',
+    exact: true,
     component: NewRequest
   },
   {
     path: StorageRoute,
     title: 'Storage',
+    exact: true,
     component: Storage
   },
   {
     path: LoginRoute,
     title: 'Login',
+    exact: true,
     component: Login
   },
 
@@ -61,10 +65,10 @@ export const routes = [
 ];
 
 export const RequestManagerRouter = () => (
-  <Layout>
+<Layout>
     <Switch>
       {routes.map(route => (
-        <Route path={route.path}  key={route.path} component={route.component} />
+        <Route path={route.path} exact={route.exact} key={route.path} component={route.component} />
       ))}
     </Switch>
   </Layout>

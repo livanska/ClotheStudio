@@ -22,7 +22,7 @@ namespace Backend
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int paymentID { get; set; }
 
-        public int employeeID { get; set; }
+        public int? employeeID { get; set; }
 
         public int billNumber { get; set; }
 
