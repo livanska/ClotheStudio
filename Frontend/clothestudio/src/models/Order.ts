@@ -16,4 +16,5 @@ export const defaultOrder:Order={
     employeeID:0,
     expectedDeadlineTime: '',
     orderedItems: [],
+    customerID:-1
 }

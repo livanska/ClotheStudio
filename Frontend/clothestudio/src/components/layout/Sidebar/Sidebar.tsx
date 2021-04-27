@@ -2,17 +2,19 @@ import React, { useEffect, useRef } from 'react';
 import cn from 'classnames'
 import { NavLink } from 'react-router-dom';
 import { SidebarNavProps, SidebarNavLinkProps, SidebarProps } from './Sidebar.types';
-import Logo from '../../../assets/images/logo.svg';
+import ClotheStudio from '../../../pages/Login/ClotheStudio.svg';
 import css from './Sidebar.module.scss';
 import {
-  EmployeesRoute, OrdersRoute, RequestsRoute
+  EmployeesRoute, OrdersRoute, RequestsRoute,StorageRoute
 } from '../../../router/routes';
 
 const SidebarNav = ({ onLinkClick }: SidebarNavProps) => {
+  
   const navLinks: SidebarNavLinkProps[] = [
-    { to: EmployeesRoute, name: 'Employees', exact: true  },
+    { to: EmployeesRoute, name: 'Employees'},
     { to: OrdersRoute, name: 'Orders' },
     { to: RequestsRoute, name: 'Requests' },
+    { to: StorageRoute, name: 'Storage' },
   ];
 
   return (
@@ -55,7 +57,7 @@ export const Sidebar = ({ className, isOpen, setIsOpen }: SidebarProps) => {
   return (
     <aside className={cn(className, css.sidebar)} ref={sidebar}>
       <header className={css.sidebar_header}>
-        <img className={css.sidebar_logo} src={Logo} alt='My Forms Logo' />
+        <img className={css.sidebar_logo} src={ClotheStudio} alt='My Forms Logo' />
       </header>
       <SidebarNav onLinkClick={() => setIsOpen(false)} />
     </aside>

@@ -3,18 +3,19 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { Layout } from '../components/layout/Layout/Layout';
 import { Employee } from '../pages/Employee';
+import { Login } from '../pages/Login/Login';
 import { NewOrder } from '../pages/NewOrder/NewOrder';
 import { NewRequest } from '../pages/NewRequest/NewRequest';
 import { Orders } from '../pages/Orders/Orders';
 import { Requests } from '../pages/Requests/Requests';
+import { Storage } from '../pages/Storage/Storage';
 
 
-import {EmployeesRoute , NewOrderRoute, OrdersRoute,RequestsRoute, NewRequestRoute} from './routes';
+import {EmployeesRoute , NewOrderRoute, OrdersRoute,RequestsRoute, NewRequestRoute, StorageRoute, LoginRoute} from './routes';
 
 export const routes = [
   {
     path: EmployeesRoute,
-    exact: true,
     title: 'Employees',
     component: Employee
   },
@@ -38,6 +39,17 @@ export const routes = [
     title: 'NewRequest',
     component: NewRequest
   },
+  {
+    path: StorageRoute,
+    title: 'Storage',
+    component: Storage
+  },
+  {
+    path: LoginRoute,
+    title: 'Login',
+    component: Login
+  },
+  
 //   {
 //     path: FormsRoute,
 //     title: 'My Forms',
@@ -64,7 +76,7 @@ export const ManagerRouter = () => (
   <Layout>
     <Switch>
       {routes.map(route => (
-        <Route path={route.path} exact={route.exact} key={route.path} component={route.component} />
+        <Route path={route.path} key={route.path} component={route.component} />
       ))}
     </Switch>
   </Layout>

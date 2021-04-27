@@ -17,7 +17,7 @@ export const Header = ({ sidebarBurger }: HeaderProps) => {
 
   const logOut =()=>{
     localStorage.setItem('user','')
-    window.location.pathname = '/'
+    window.location.pathname = '/login'
   }
 
 

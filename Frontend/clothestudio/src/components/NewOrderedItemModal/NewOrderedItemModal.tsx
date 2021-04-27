@@ -83,12 +83,14 @@ export const NewOrderedItem = ({ modalIsOpen,
         }
     }
     const changeAmount = (id: number, e: any) => {
+        let numb = parseInt(e.target.value )
+    
         setReqMaterials(prev =>
             prev.map(rm => {
                 if (rm.materialID === id) {
                     return {
                         ...rm,
-                        materialAmount: e.target.value
+                        materialAmount: numb
                     };
                 }
                 return rm;
@@ -123,7 +125,7 @@ export const NewOrderedItem = ({ modalIsOpen,
                         </InputGroup.Prepend>
                         <Form.Control type='number' min={1} onChange={(e) => changeAmount(rm.materialID, e)} defaultValue={1} aria-label="Small" aria-describedby="inputGroup-sizing-sm" />
                         <InputGroup.Append>
-                            <InputGroup.Text>{rm.materialAmount <= 0 ? Math.round(0): (Math.round(rm.materialCost * rm.materialAmount))}$</InputGroup.Text>
+                            <InputGroup.Text>{rm.materialAmount <= 0 ? '0': ((rm.materialCost * rm.materialAmount).toFixed(2))}$</InputGroup.Text>
                         </InputGroup.Append>
                     </InputGroup>)}
             </Form.Group>

@@ -6,47 +6,18 @@ import { Order } from "../../models/Order"
 
 export const RequestCard = (props: any, statuses:any, deleteReq:any) => {
     const [request, setRequest] =useState<any>(props.props)
-    console.log(props)
 
     async function handleStatusChange ( e: ChangeEvent<HTMLInputElement>) {
-        // setOrder((prev:any)=>({...prev,statusID:e.target.value}))
-        
-        const res = await axios.put(`http://localhost:3000/api/Requests/${request.requestID}`,{...request,statusID:e.target.value}).then(r => r.data)
+
+        const res = await axios.put(`http://localhost:3000/api/Requests/${request.requestID}`,{...request,statusID:e.target.value}).then(r => r.data).then(r=> alert("Status changed!"))
         console.log(res)
         setRequest((prev:any)=>({...prev,statusID:e.target.value}))
     }
 
-    async function handleDoneOrder(){
-        setRequest((prev:any)=>({...prev, statusID:4}))
-        const res = await axios.put(`http://localhost:3000/api/Requests/${request.requestID}`,request).then(r => r.data)
-    }
      const deleteRequest=(request:any)=>{
-    // const res = await axios.put(`http://localhost:3000/api/Requests/${request.requestID}`,request).then(r => r.data)
-    props.deleteReq(request)     
+        props.deleteReq(request)     
     }
-    // async function handleDoneItem (item:any){
 
-    //     if(item.doneTime == undefined)
-    //     {
-    //      item.doneTime = (new Date(Date.now()))
-    //      //setDone(true);
-    //     }
-    //     else
-    //     {
-    
-    //         item.doneTime = undefined
-    //     }
-    //     const res = await axios.put(`http://localhost:3000/api/OrderedItems/${item.orderedItemID}`,item).then(r => r.data)
- 
-
-    //     setOrder((prev:any)=>{
-    //         const orderedItems = prev.OrderedItems
-    //         orderedItems.map((el:any)=> (el.orderedItemID == item.orderedItemID && item)) 
-    //         return {...prev, OrderedItems:orderedItems}
-    //     })
-
- 
-    //}
     return (
         request && (
             <div className="container-sm mb-1 mt-1">
@@ -70,6 +41,7 @@ export const RequestCard = (props: any, statuses:any, deleteReq:any) => {
                 <Card.Title className="m-0 p-0" >Items:</Card.Title>
                 <Card.Text className="m-0 p-0">
                    {request.RequestedMaterials && request.RequestedMaterials.map((oi:any,ind:number)=><p>{ind+1}. {oi.Material.Color.name} {oi.Material.MaterialType.name}: {oi.amount}units {' x '} {oi.Material.costPerUnit}$   <p style={{'float':'right'}} className="mr-5"> <b>{Math.round(oi.amount*oi.Material.costPerUnit)}$</b></p> </p>)}
+                   <Card.Subtitle style={{paddingBottom:'5px', fontSize: '12px' }}>Employee: {request.Employee.firstname} {request.Employee.lastname}</Card.Subtitle>
                 </Card.Text>
             </Card.Body>
             </Accordion.Collapse>

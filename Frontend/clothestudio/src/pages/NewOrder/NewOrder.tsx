@@ -31,7 +31,8 @@ export const NewOrder = () => {
 
     const handleDateChange = (e: string) => {
         //431-630-6441
-        let date = ((new Date(Date.parse(e))).toLocaleString())
+       // new Date(e).toDateString()
+        let date = new Date(e).toDateString()
         setOrder(prev => ({ ...prev, expectedDeadlineTime: date }))
     }
 
@@ -62,7 +63,7 @@ export const NewOrder = () => {
     useEffect(() => {
         if (!needNewCustomer)
             handleInfoSelect('customerID', customer.customerID)
-        else setOrder(prev => ({ ...prev, firstname: customer.firstname, lastname: customer.lastname, phoneNumber: customer.phoneNumber }))
+        else setOrder(prev => ({ ...prev,customerID:-1, firstname: customer.firstname, lastname: customer.lastname, phoneNumber: customer.phoneNumber }))
     }, [customer])
 
     const deleteOrderItem = (oi: OrderedItem) => {
@@ -70,9 +71,9 @@ export const NewOrder = () => {
     }
 
     const total = useMemo(() => {
-        let sum = orderedItems.reduce((s: number, oi: OrderedItem) => s + oi.serviceCost + (Math.round(oi.reqMaterials.reduce((sum, rm) => sum + rm.materialAmount * rm.materialCost, 0))), 0)
+        let sum = orderedItems.reduce((s: number, oi: OrderedItem) => s + oi.serviceCost + ((oi.reqMaterials.reduce((sum, rm) => sum + rm.materialAmount * rm.materialCost, 0))), 0)
         console.log(sum)
-        return (customer.customerID !== undefined) ? sum - Math.round(sum * customer.discount / 100) : sum
+        return (customer.customerID !== undefined) ? sum - (sum * customer.discount / 100) : sum
     }, [orderedItems, customer])
 
     return (
@@ -82,7 +83,7 @@ export const NewOrder = () => {
                 <InputGroup.Prepend>
                     <InputGroup.Text>Customer phone number:</InputGroup.Text>
                 </InputGroup.Prepend>
-                <Form.Control onChange={(e) => handleNumberChange(e.target.value)}></Form.Control>
+                <Form.Control  placeholder='012-345-6789' onChange={(e) => handleNumberChange(e.target.value)}></Form.Control>
             </InputGroup>
             {(customer.customerID && !needNewCustomer )&& <p><b>Customer: </b><Form.Label>{customer.firstname } {customer.lastname}  </Form.Label><b  style={{ float: 'right' }}> Discount: {customer.discount ? customer.discount :'0' } %</b>
             <br /><b><p style={{ float: 'right' }}>{'Orders: '}{customer.ordersCount}</p></b> </p> }
@@ -94,7 +95,7 @@ export const NewOrder = () => {
                             <Form.Control placeholder='Firstname' onChange={(e) => (setCustomer((prev: any) => ({ ...prev, firstname: e.target.value })))} />
                         </Col>
                         <Col>
-                            <Form.Control placeholder='Lastname' onChange={(e) => (setCustomer((prev: any) => ({ ...prev, firstname: e.target.value })))} />
+                            <Form.Control placeholder='Lastname' onChange={(e) => (setCustomer((prev: any) => ({ ...prev, lastname: e.target.value })))} />
                         </Col>
                     </Row>
                 </Form>
@@ -110,7 +111,7 @@ export const NewOrder = () => {
                 <Button style={{ float: 'right' }} size='sm' className='ml-2' onClick={() => deleteOrderItem(oi)}>Delete</Button>
             </p>)}
             <div>
-                {orderedItems.length !== 0 && <p className='mb-4'> <hr /> <Form.Label style={{ float: 'right' }}><b>Total: {total}$</b></Form.Label></p>}
+                {orderedItems.length !== 0 && <p className='mb-4'> <hr /> <Form.Label style={{ float: 'right' }}><b>Total: {total.toFixed(2)} $</b></Form.Label></p>}
 
             </div> <NewOrderedItem
                 items={orderedItems}
