@@ -24,8 +24,10 @@ namespace Backend.Controllers
         public string email { get; set; }
         public string phoneNumber { get; set; }
         public DateTime createDate { get; set; }
+        public DateTime updateDate { get; set; }
         public string password { get; set; }
         public string position { get; set; }
+        public int positionID { get; set; }
         public int atelieID { get; set; }
         public string atelie { get; set; }
         public int ordersCount { get; set; }
@@ -66,10 +68,12 @@ namespace Backend.Controllers
                     firstname = b.firstname,
                     lastname = b.lastname,
                     email = b.email,
+                    positionID = b.positionID,
                     position = b.Position.name,
                     phoneNumber = b.phoneNumber,
                     password = b.password,
                     createDate = b.createDate,
+                    updateDate =b.updateDate,
                     atelieID = b.atelieID,
                     atelie = b.Atelie.address.ToString() + ", " + b.Atelie.City.name.ToString() + ", " + b.Atelie.City.Country.name.ToString(),
                     ordersCount = db.Order.Where(o=>o.employeeID == b.employeeID).Count(),
@@ -100,7 +104,9 @@ namespace Backend.Controllers
                     email = b.email,
                     position = b.Position.name,
                     phoneNumber = b.phoneNumber,
+                    positionID = b.positionID,
                     password = b.password,
+                    updateDate = b.updateDate,
                     createDate = b.createDate,
                     atelieID= b.atelieID,
                     atelie = b.Atelie.address.ToString()+ ", "+ b.Atelie.City.name.ToString() + ", "+b.Atelie.City.Country.name.ToString(),
@@ -136,12 +142,14 @@ namespace Backend.Controllers
                     email = b.email,
                     position = b.Position.name,
                     phoneNumber = b.phoneNumber,
+                    positionID = b.positionID,
                     password = b.password,
                     createDate = b.createDate,
+                    updateDate = b.updateDate,
                     atelieID = b.atelieID,
                     atelie = b.Atelie.address.ToString() + ", " + b.Atelie.City.name.ToString() + ", " + b.Atelie.City.Country.name.ToString()
 
-                }).SingleOrDefaultAsync(e => e.email == email && e.password == e.password); 
+                }).SingleOrDefaultAsync(e => e.email == email ); 
  
             if (employee == null)
             {
@@ -169,6 +177,7 @@ namespace Backend.Controllers
                         email = b.email,
                         position = b.Position.name,
                         phoneNumber = b.phoneNumber,
+                        positionID = b.positionID,
                         password = b.password,
                         createDate = b.createDate,
                         atelieID = b.atelieID,
@@ -265,6 +274,7 @@ namespace Backend.Controllers
             {
                 return NotFound();
             }
+
 
             db.Employee.Remove(employee);
             db.SaveChanges();

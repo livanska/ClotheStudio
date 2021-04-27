@@ -32,15 +32,15 @@ namespace Backend
 
         public DateTime updateDate { get; set; }
 
-        [JsonIgnore]
         public virtual Atelie Atelie { get; set; }
 
-        [JsonIgnore]
         public virtual Material Material { get; set; }
 
+        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RequestedMaterialRealization> RequestedMaterialRealization { get; set; }
 
+        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RequiredMaterialsForOrderedItem> RequiredMaterialsForOrderedItem { get; set; }
     }

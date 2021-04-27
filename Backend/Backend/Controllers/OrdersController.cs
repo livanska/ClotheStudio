@@ -30,7 +30,7 @@ namespace Backend.Controllers
         public DateTime? expectedDeadlineTime { get; set; }
         public DateTime? realReceivingTime { get; set; }
         // public int? orderPaymentID { get; set; }
-        public int? totalCost { get; set; }
+        public decimal? totalCost { get; set; }
         public ICollection<OrderedItems> orderedItems { get; set; }
 
     }
@@ -43,7 +43,7 @@ namespace Backend.Controllers
 
     public class OrderedItemInserted
     {
-        public ICollection<MaterialIns> RequestedMaterials { get; set; }
+        public ICollection<MaterialIns> reqMaterials { get; set; }
         public int serviceID { get; set; }
         public string description { get; set; }
 
@@ -58,7 +58,7 @@ namespace Backend.Controllers
         public int statusID { get; set; }
         public int atelieID { get; set; }
         public DateTime? expectedDeadlineTime { get; set; }
-        public int? totalCost { get; set; }
+        public decimal? totalCost { get; set; }
         public ICollection<OrderedItemInserted> orderedItems { get; set; }
     }
 
@@ -169,9 +169,27 @@ namespace Backend.Controllers
             }*/
 
             var custID = 0;
-            if (orderIns.customerID.Equals(null) )
+            if (orderIns.customerID != null && orderIns.customerID != -1)
             {
                 custID = orderIns.customerID;
+                var discount = db.Customer.Where(c => c.customerID == custID).First().discount;
+                var ordersCount = db.Order.Where(o => o.customerID == custID).Count();
+                var newDiscount = discount;
+                if ((discount < 10) && ((ordersCount + 1) % 10 == 0))
+                    newDiscount++;
+                else if((discount < 20 && discount >= 10 ) && ((ordersCount + 1) % 50 == 0))
+                    newDiscount++;
+                else if((discount >=20 ) && ((ordersCount + 1) % 100 == 0))
+                    newDiscount++;
+                if (newDiscount != discount)
+                {
+                    var cust = db.Customer.Where(c => c.customerID == custID).First();
+                    cust.discount = newDiscount;
+                    db.Entry(cust).State = EntityState.Modified;
+
+
+                }
+
             }
             else {
             custID = db.Customer.Max(c => c.customerID) + 1;
@@ -196,12 +214,12 @@ namespace Backend.Controllers
                 createDate = DateTime.Now,
                 updateDate = DateTime.Now,
                 statusID = 1,
-                //new DataColumn(orderIns.expectedDeadlineTime, typeof(DateTime))
                 expectedDeadlineTime = orderIns.expectedDeadlineTime,
                 customerID = custID,
                 orderPaymentID = ordPaymentInsID,
 
             });
+            int reqMatID = db.RequiredMaterialsForOrderedItem.Max(rm => rm.requiredMaterialID)+1;
             int ordItemStartID = db.OrderedItems.Max(ois => ois.orderedItemID) ;
             orderIns.orderedItems.ForEach(oi =>
             {
@@ -219,12 +237,33 @@ namespace Backend.Controllers
 
                     }
                 );
-                oi.RequestedMaterials.ForEach(m =>
+               
+                oi.reqMaterials.ForEach(m =>
                 {
-                    int reqMatID = db.RequiredMaterialsForOrderedItem.Max(rm => rm.requiredMaterialID) + 1;
+                    var stormatID = -1;
+                    var matExists = db.StoredMaterials.Any(sm =>
+                        sm.atelierID == orderIns.atelieID && sm.materialID == m.materialID);
+                    if(matExists)
+                    {
+                        stormatID = db.StoredMaterials.Where(sm => sm.atelierID == orderIns.atelieID && sm.materialID == m.materialID).First().storedMaterialID;
+                        var stormat = db.StoredMaterials.Find(stormatID);
+                        if (stormat.amountLeft >= m.materialAmount)
+                        {
+                            
+                            stormat.amountLeft -= m.materialAmount;
+                            db.Entry(stormat).State = EntityState.Modified;
+
+                        }
+                         else stormatID = -1;
+
+
+                    }
+
+
+                  
                     db.RequiredMaterialsForOrderedItem.Add(new RequiredMaterialsForOrderedItem()
                     {
-                        requiredMaterialID = reqMatID,
+                        requiredMaterialID = reqMatID++,
                         materialID = m.materialID,
                         amount = m.materialAmount,
                         createDate = DateTime.Now,
@@ -232,14 +271,14 @@ namespace Backend.Controllers
                         orderedItemID = ordItemID,
                     });
 
-                   db.StoredMaterials.Where(st=>st.atelierID == orderIns.atelieID).ForEach(st =>
-                   {
-                       if (st.materialID == m.materialID && st.amountLeft >= m.materialAmount)
-                       {
-                           st.amountLeft = st.amountLeft - m.materialAmount;
-                           db.RequiredMaterialsForOrderedItem.First(rm=>rm.materialID == m.materialID).storedMaterialID = st.storedMaterialID;
-                       }
-                   });
+                    if (stormatID != -1)
+                    {
+                        var ReqM = db.RequiredMaterialsForOrderedItem.Find(reqMatID);
+                        ReqM.storedMaterialID = stormatID;
+
+                    } 
+                    
+                
                 });
             });
             try
@@ -248,7 +287,7 @@ namespace Backend.Controllers
             }
             catch (DbUpdateException)
             {
-                if (OrderExists(order.orderID))
+                if (OrderExists(orderInsID))
                 {
                     return Conflict();
                 }
@@ -258,7 +297,7 @@ namespace Backend.Controllers
                 }
             }
 
-            return CreatedAtRoute("DefaultApi", new { id = order.orderID }, order);
+            return CreatedAtRoute("DefaultApi", new { id = orderInsID }, order);
         }
 
         // DELETE: api/Orders/5
@@ -270,6 +309,23 @@ namespace Backend.Controllers
             {
                 return NotFound();
             }
+
+            var ordItemsToRem = db.OrderedItems.Where(oi => oi.orderID == id);
+            ordItemsToRem.ForEach(oi =>
+            {
+               var reqMat = db.RequiredMaterialsForOrderedItem.Where(rmoi => rmoi.orderedItemID == oi.orderedItemID);
+                reqMat.ForEach(rm => db.RequiredMaterialsForOrderedItem.Remove(rm));
+                db.OrderedItems.Remove(oi);
+            });
+
+
+            var ordPaymnet = db.OrderPayment.Where(p => p.orderPaymentID == order.orderPaymentID).First();
+            var paymnet = ordPaymnet.Payment;
+
+            db.Payment.Remove(paymnet);
+            db.OrderPayment.Remove(ordPaymnet);
+            
+
 
             db.Order.Remove(order);
             db.SaveChanges();

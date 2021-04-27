@@ -25,7 +25,7 @@ namespace Backend.Controllers
         public string address { get; set; }
         public int atelieID { get; set; }
         public DateTime? expectedDeadlineTime { get; set; }
-        public int? totalCost { get; set; }
+        public decimal? totalCost { get; set; }
         public ICollection<MaterialIns> requestedMaterials { get; set; }
     }
 
@@ -74,6 +74,50 @@ namespace Backend.Controllers
         public async Task<IHttpActionResult> PutRequest(int id, Request request)
         {
             request.RequestStatus = db.RequestStatus.Where(o => o.requestStatusID == request.statusID).First();
+
+            if (request.RequestStatus.requestStatusID == 4)
+            {
+                db.RequestedMaterials.Where(rm=>rm.requestID==request.requestID).ForEach(rm =>
+                {
+                    var matExists = db.StoredMaterials.Any(sm =>
+                        sm.atelierID == request.Employee.atelieID && sm.materialID == rm.materialID);
+                    if (matExists)
+                    {
+                        var stormatID = db.StoredMaterials
+                            .Where(sm => sm.atelierID == request.Employee.atelieID && sm.materialID == rm.materialID)
+                            .First().storedMaterialID;
+                        var stormat = db.StoredMaterials.Find(stormatID);
+                        stormat.amountLeft += rm.amount;
+                        db.Entry(stormat).State = EntityState.Modified;
+
+
+                    }
+                    else
+                    {
+                        db.StoredMaterials.Add(new StoredMaterials()
+                        {
+                            storedMaterialID = db.StoredMaterials.Max(st => st.storedMaterialID) + 1,
+                            atelierID = request.Employee.atelieID,
+                            materialID = rm.materialID,
+                            amountLeft = rm.amount,
+                            createDate = DateTime.Now,
+                            updateDate = DateTime.Now,
+                            
+                        });
+                    }
+
+                    
+                });
+            }
+
+
+       
+
+
+
+
+
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -199,8 +243,12 @@ namespace Backend.Controllers
 
             });
             int reqMatStartID = db.RequestedMaterials.Max(ois => ois.requestedMaterialID);
+
                 reqInst.requestedMaterials.ForEach(om =>
                 {
+
+
+
                     reqMatStartID++;
                     db.RequestedMaterials.Add(new RequestedMaterials()
                     {
@@ -210,6 +258,7 @@ namespace Backend.Controllers
                         createDate = DateTime.Now,
                         updateDate = DateTime.Now,
                         requestID = reqInstID,
+                        
                     });
                 });
             try

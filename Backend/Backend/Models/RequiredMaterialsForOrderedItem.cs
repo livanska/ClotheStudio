@@ -18,7 +18,7 @@ namespace Backend
 
         public int amount { get; set; }
 
-        public int storedMaterialID { get; set; }
+        public int? storedMaterialID { get; set; }
 
         public int? orderedItemID { get; set; }
 
@@ -30,6 +30,8 @@ namespace Backend
 
         public virtual Material Material { get; set; }
 
+
+        [JsonIgnore]
         public virtual OrderedItems OrderedItems { get; set; }
 
         [JsonIgnore]
