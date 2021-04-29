@@ -25,7 +25,7 @@ export const RequestCard = (props: any, statuses:any, deleteReq:any) => {
         <Card>
         <Accordion.Toggle as={Card.Header} eventKey={(request.RequestPayment.Payment.billNumber)}>
           
-             {request.SupplierCompany.name}   {request.SupplierCompany.rating}    
+             {request.SupplierCompany.name}   {request.SupplierCompany.rating}/100    
             <Row style={{'float':'right'}}  > 
             <span  className="mr-4"><b>{request.RequestPayment.Payment.totalCost.toFixed(2)} $</b> </span>
                 <span>

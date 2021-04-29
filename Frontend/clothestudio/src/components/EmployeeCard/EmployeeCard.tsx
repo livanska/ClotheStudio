@@ -2,13 +2,12 @@ import axios from "axios"
 import { Button, Card } from "react-bootstrap"
 
 export const EmployeeCard = (e:any, wantEdit:any) => {
-    //console.log(e)
 const deleteEmpl=(e:number)=>{
     const res = axios.delete(`http://localhost:3000/api/Employees/${e}`).then( r=> alert("Deleted employee!"))
 }
 
     return (
-        <Card style={{ width: '32%' }} className='mt-3 mb-2'>
+        <Card style={{ width: '32%' }} >
             <Card.Body>
                 <Card.Title className="pt-0 pb-0 mb-0">{e.firstname} {e.lastname}</Card.Title>
                 <Card.Subtitle className="mb-1 mt-0 pt-0 text-muted">{e.position}</Card.Subtitle>
@@ -30,8 +29,8 @@ const deleteEmpl=(e:number)=>{
                 </span>}
                 <hr style={{ marginTop: '4px', marginBottom: '10px'}}/>
                 <Card.Subtitle style={{marginBottom:'20px', fontSize: '12px' }}>Department: {e.atelie}</Card.Subtitle>
-                <Button size='sm' style={{ position: 'absolute',bottom:'5px' ,left:'70px'}} onClick={()=>e.wantEdit(e)}>Edit</Button>
-                <Button size='sm' style={{ position: 'absolute',bottom:'5px',left:'120px' }} onClick={()=>deleteEmpl(e.employeeID)}>Delete</Button>
+                <Button size='sm' style={{ position: 'absolute',bottom:'5px' ,left:'150px'}} onClick={()=>e.wantEdit(e)}>Edit</Button>
+                <Button size='sm' style={{ position: 'absolute',bottom:'5px',left:'200px' }} onClick={()=>deleteEmpl(e.employeeID)}>Delete</Button>
             </Card.Body>
         </Card>
 

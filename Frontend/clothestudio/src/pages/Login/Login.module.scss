@@ -1,5 +1,6 @@
 @import '../../styles/variables.scss';
 
+
 .page_content {
     margin: 20px;
     padding: 20px;
@@ -7,4 +8,13 @@
     box-shadow: 0 0 10px rgba($color-dark-grey, 0.2);
     height: calc(100vh - 40px);
     text-align: center;
+ 
+    background-size: fill;
+    background-repeat: no-repeat;
+    background: url('https://media.istockphoto.com/photos/sky-blue-light-blue-watercolor-hand-drawn-texture-with-brush-strokes-picture-id1179624679?k=6&m=1179624679&s=170667a&w=0&h=lDXDugd5H3ZiSiUzkKNVoOYN1s9bSGZJ7oRqyLJEp-E=');
+}
+.content{
+    background-color: $color-dark-blue-2;
+    width: min-content;
+    margin: auto;
 }

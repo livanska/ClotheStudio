@@ -75,6 +75,7 @@ namespace Backend.Controllers
         {
             request.RequestStatus = db.RequestStatus.Where(o => o.requestStatusID == request.statusID).First();
 
+            var newStID = db.StoredMaterials.Max(st => st.storedMaterialID) + 1;
             if (request.statusID == 4)
             {
                 db.RequestedMaterials.Where(rm=>rm.requestID == request.requestID).ForEach(rm =>
@@ -95,7 +96,7 @@ namespace Backend.Controllers
                     }
                     else
                     {
-                        var newStID = db.StoredMaterials.Max(st => st.storedMaterialID) + 1;
+                        
                         db.StoredMaterials.Add(new StoredMaterials()
                         {
                             storedMaterialID = newStID++,
@@ -123,6 +124,20 @@ namespace Backend.Controllers
             {
                 return BadRequest();
             }
+
+            request = new Request
+            {
+                createDate = request.createDate,
+                companyID = request.companyID,
+                requestID = request.requestID,
+                employeeID = request.employeeID,
+                statusID = request.statusID,
+                requestPaymentID = request.requestPaymentID,
+                updateDate = request.updateDate,
+                expectedDeadlineTime = request.expectedDeadlineTime,
+                realReceivingTime = request.realReceivingTime,
+
+            };
 
             db.Entry(request).State = EntityState.Modified;
 

@@ -13,10 +13,8 @@ export const NewOrder = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const openModal = () => setModalIsOpen(true);
     const closeModal = () => {
-        // setCurrentlyEditedField(null);
         setModalIsOpen(false);
     };
-
 
     const createOrder = () => {
         const res = axios.post('http://localhost:3000/api/Orders', { ...order, totalCost: total }).then(r => r.data)
@@ -30,8 +28,6 @@ export const NewOrder = () => {
 
 
     const handleDateChange = (e: string) => {
-        //431-630-6441
-       // new Date(e).toDateString()
         let date = new Date(e).toDateString()
         setOrder(prev => ({ ...prev, expectedDeadlineTime: date }))
     }

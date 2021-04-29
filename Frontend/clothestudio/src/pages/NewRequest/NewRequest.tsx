@@ -21,7 +21,6 @@ export const NewRequest = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const openModal = () => setModalIsOpen(true);
     const closeModal = () => {
-        // setCurrentlyEditedField(null);
         setModalIsOpen(false);
     };
 
@@ -29,8 +28,6 @@ export const NewRequest = () => {
     const createRequest = () => {
         console.log(total)
         const res = axios.post('http://localhost:3000/api/Requests', { ...request, totalCost: total }).then(r => r.data)
-        //console.log(res)
-        //console.log( { ...request, totalCost: total })
     }
 
     useEffect(() => {
@@ -40,7 +37,6 @@ export const NewRequest = () => {
 
 
     const handleDateChange = (e:string)=>{
-        //431-630-6441
         let date = ((new Date(Date.parse(e) )).toLocaleString())
         setRequest(prev => ({ ...prev, expectedDeadlineTime: date}))
     }

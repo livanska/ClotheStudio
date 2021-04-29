@@ -21,7 +21,8 @@ namespace Backend.Controllers
             public int atelieID { get; set; }
             public string location { get; set; }
             public DateTime createDate { get; set; }
-            public ICollection<Employee> employees { get; set; }
+            public decimal? totalIncome { get; set; }
+            public decimal? totalOutgoings { get; set; }
 
         }
         private SewingAtelie db = new SewingAtelie();
@@ -43,7 +44,8 @@ namespace Backend.Controllers
                     atelieID = b.atelieID,
                     location = b.address.ToString() + ", " + b.City.name.ToString() + ", " + b.City.Country.name.ToString(),
                     createDate = b.createDate,
-                    employees = b.Employee
+                    totalIncome =db.Order.Where(a=>a.Employee.atelieID==id).Sum(o => o.OrderPayment.Payment.totalCost),
+                    totalOutgoings = db.Request.Where(a => a.Employee.atelieID == id).Sum(o => o.RequestPayment.Payment.totalCost),
 
                 }).SingleOrDefaultAsync(b => b.atelieID == id);
             if (atelie == null)
